@@ -19,6 +19,8 @@
         </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
+    <include layout="@layout/item_send" />
+    <include layout="@layout/item_recieve" />
 
     <include layout="@layout/bottom_chat" />
 

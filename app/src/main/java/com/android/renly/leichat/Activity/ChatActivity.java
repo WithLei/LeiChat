@@ -40,6 +40,7 @@ public class ChatActivity extends BaseActivity {
     ViewPager toolboxPagersFace;
     @BindView(R.id.toolbox_tabs)
     PagerSlidingTabStrip toolboxTabs;
+    //下方隐藏菜单
     @BindView(R.id.toolbox_layout_face)
     RelativeLayout toolboxLayoutFace;
 
@@ -64,10 +65,12 @@ public class ChatActivity extends BaseActivity {
                 break;
             case R.id.iv_title_info:
                 //好友用户信息界面
-//                startActivity(new Intent(ChatActivity.this,UserInfoAcitivity.class));
+                startActivity(new Intent(ChatActivity.this,UserInfoAcitivity.class));
                 break;
             case R.id.toolbox_btn_send:
                 //发送按钮
+                if (!toolboxEtMessage.getText().toString().isEmpty())
+                    sendMessage();
                 break;
             case R.id.toolbox_btn_face:
                 //表情按钮
@@ -78,9 +81,14 @@ public class ChatActivity extends BaseActivity {
             case R.id.toolbox_et_message:
                 //输入框
                 break;
-            case R.id.toolbox_layout_face:
-                //下方隐藏菜单
-                break;
         }
+    }
+
+    /*
+    点击发送消息
+     */
+    private void sendMessage() {
+        String msg = toolboxEtMessage.getText().toString();
+
     }
 }

@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.ChatActivity" />
+        <activity android:name=".Activity.UserInfoAcitivity" />
     </application>
 
 </manifest>
