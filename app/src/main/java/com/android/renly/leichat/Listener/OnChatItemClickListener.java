@@ -4,6 +4,4 @@ public interface OnChatItemClickListener {
     void onPhotoClick(int position);
 
     void onTextClick(int position);
-
-    void onFaceClick(int position);
 }

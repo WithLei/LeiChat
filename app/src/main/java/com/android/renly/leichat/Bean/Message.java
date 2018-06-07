@@ -20,10 +20,8 @@ public class Message {
     private int type;//1-text 2-photo 3-face 4-voice
     private int state;//1-success 2-fail 3-loading
 
-    private String fromUserName;
-    private String toUserName;
-    private String fromUserAvater;
-    private String toUserAvater;
+    private String userName;
+    private String userAvater;
 
     private String content;
     private Drawable phoot ;
@@ -32,19 +30,11 @@ public class Message {
     private boolean isSend;
     private boolean sendSuccess;
 
-    public Message(int type, int state, String fromUserName, String toUserName,
-                   String fromUserAvater, String toUserAvater, String content,
-                   Date time, boolean isSend, boolean sendSuccess) {
-        this.type = type;
-        this.state = state;
-        this.fromUserName = fromUserName;
-        this.toUserName = toUserName;
-        this.fromUserAvater = fromUserAvater;
-        this.toUserAvater = toUserAvater;
+    public Message(String userName, String userAvater, String content, boolean isSend) {
+        this.userName = userName;
+        this.userAvater = userAvater;
         this.content = content;
-        this.time = time;
         this.isSend = isSend;
-        this.sendSuccess = sendSuccess;
     }
 
     public Long getId() {
@@ -71,36 +61,20 @@ public class Message {
         this.state = state;
     }
 
-    public String getFromUserName() {
-        return fromUserName;
+    public void setUserName(String userName){
+        this.userName = userName;
     }
 
-    public void setFromUserName(String fromUserName) {
-        this.fromUserName = fromUserName;
+    public String getUserName(){
+        return this.userName;
     }
 
-    public String getToUserName() {
-        return toUserName;
+    public String getUserAvater(){
+        return this.userAvater;
     }
 
-    public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
-    }
-
-    public String getFromUserAvater() {
-        return fromUserAvater;
-    }
-
-    public void setFromUserAvater(String fromUserAvater) {
-        this.fromUserAvater = fromUserAvater;
-    }
-
-    public String getToUserAvater() {
-        return toUserAvater;
-    }
-
-    public void setToUserAvater(String toUserAvater) {
-        this.toUserAvater = toUserAvater;
+    public void setUserAvater(String userAvater){
+        this.userAvater = userAvater;
     }
 
     public String getContent() {

@@ -9,15 +9,23 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.renly.leichat.Adapter.ChatAdapter;
+import com.android.renly.leichat.Bean.Message;
 import com.android.renly.leichat.Common.BaseActivity;
+import com.android.renly.leichat.Listener.OnChatItemClickListener;
 import com.android.renly.leichat.R;
 import com.android.renly.leichat.UIUtils.PagerSlidingTabStrip;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class ChatActivity extends BaseActivity {
     @BindView(R.id.iv_title_back)
@@ -49,11 +57,42 @@ public class ChatActivity extends BaseActivity {
         return R.layout.activity_chat;
     }
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        initData();
+        initList();
+        initListener();
+        unbinder = ButterKnife.bind(this);
+    }
+
+    private List<Message>msgs;
+
+    private void initData() {
+        msgs = new ArrayList<>();
+        msgs.add(new Message("renly",""));
+    }
+
+    private void initList() {
+        chatAdapter = new ChatAdapter();
+    }
+
+    public ChatAdapter chatAdapter;
+
+    private void initListener() {
+        chatAdapter.setOnChatItemClickListener(new OnChatItemClickListener() {
+            @Override
+            public void onPhotoClick(int position) {
+                Toast.makeText(ChatActivity.this, "onPhotoClick", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onTextClick(int position) {
+                Toast.makeText(ChatActivity.this, "onTextClick", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, R.id.toolbox_layout_face})
@@ -90,5 +129,11 @@ public class ChatActivity extends BaseActivity {
     private void sendMessage() {
         String msg = toolboxEtMessage.getText().toString();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }
