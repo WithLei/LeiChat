@@ -1,12 +1,17 @@
 package com.android.renly.leichat.Adapter;
 
+import android.content.Context;
+import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.android.renly.leichat.Activity.ChatActivity;
 import com.android.renly.leichat.Bean.Message;
 import com.android.renly.leichat.Common.MyApplication;
 import com.android.renly.leichat.Listener.OnChatItemClickListener;
@@ -18,13 +23,15 @@ import java.util.List;
 
 
 public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
+    private Context context;
     private List<Message> msgList = null; //消息
     private OnChatItemClickListener listener;
+    private static enum ITEM_TYPE{
+        ITEM_TYPE_RECIEVE,ITEM_TYPE_SEND;
+    }
 
-    private static final boolean isSend = true;
-    private static final boolean isRecieve = false;
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView headPhoto;
         EmojiconTextView chat_item_content_text;
 
@@ -35,7 +42,8 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         }
     }
 
-    public ChatAdapter(List<Message>msg){
+    public ChatAdapter(List<Message>msg,Context context){
+        this.context = context;
         this.msgList = msg;
     }
 
@@ -43,8 +51,8 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = null;
-        if(isSend)
+        View view ;
+        if(viewType == ITEM_TYPE.ITEM_TYPE_SEND.ordinal() )
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_send,parent,false);
         else
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recieve,parent,false);
@@ -53,13 +61,18 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         return holder;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return msgList.get(position).isSend() ? ITEM_TYPE.ITEM_TYPE_SEND.ordinal() : ITEM_TYPE.ITEM_TYPE_RECIEVE.ordinal();
+    }
+
     //对RecyclerView子项数据进行赋值
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Message message = msgList.get(position);
         //设置数据
-        holder.chat_item_content_text.setText(message.getUserName());
-        Picasso.with(MyApplication.context).load(message.getUserAvater()).into(holder.headPhoto);
+        holder.chat_item_content_text.setText(message.getContent());
+        Picasso.with(context).load(message.getUserAvater()).into(holder.headPhoto);
 
         if(listener != null){
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -85,5 +98,10 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public void setOnChatItemClickListener(OnChatItemClickListener listener){
         this.listener = listener;
+    }
+
+    public void addData(Message msg){
+        msgList.add(getItemCount(),msg);
+        notifyItemInserted(getItemCount());
     }
 }
