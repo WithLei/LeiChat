@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class AIRobot {
     private AsyncHttpClient client;
     public String reply = null;
 
+    private RecyclerView rv;
+
     final String imgReply = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/hkAN7ZOEiRPDuiQq.ax0IjNFCFaV70x6mr48jjYUhR8!/b/dFkAAAAAAAAA&bo=RAJEAkQCRAIRCT4!&rf=viewer_4";
     private static final boolean isSend = true;
     private static final boolean isRecieve = false;
@@ -37,6 +40,7 @@ public class AIRobot {
                 case GET_REPLY:
                     reply = msg.getData().getString("content");
                     chatAdapter.addData(new com.android.renly.leichat.Bean.Message("renly",imgReply,reply,isRecieve));
+                    rv.scrollToPosition(chatAdapter.getItemCount()-1);
                     Log.e("TAG",reply);
                     break;
             }
@@ -84,5 +88,9 @@ public class AIRobot {
             }
         });
 //        return reply;
+    }
+
+    public void setRV(RecyclerView rv){
+        this.rv = rv;
     }
 }

@@ -1,87 +1,166 @@
 package com.android.renly.leichat;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.android.renly.leichat.Activity.ChatActivity;
-import com.android.renly.leichat.Common.ROBOT;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
+import com.android.renly.leichat.Common.BaseActivity;
+import com.android.renly.leichat.Fragment.FriendsFragment;
+import com.android.renly.leichat.Fragment.MineFragment;
+import com.android.renly.leichat.Fragment.MsgFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import cz.msebera.android.httpclient.Header;
+import butterknife.Unbinder;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseActivity {
+    @BindView(R.id.fl_main)
+    FrameLayout flMain;
+    @BindView(R.id.iv_main_bottom_msg)
+    ImageView ivMainBottomMsg;
+    @BindView(R.id.tv_main_bottom_msg)
+    TextView tvMainBottomMsg;
+    @BindView(R.id.ll_main_bottom_msg)
+    LinearLayout llMainBottomMsg;
+    @BindView(R.id.iv_main_bottom_friends)
+    ImageView ivMainBottomFriends;
+    @BindView(R.id.tv_main_bottom_friends)
+    TextView tvMainBottomFriends;
+    @BindView(R.id.ll_main_bottom_friends)
+    LinearLayout llMainBottomFriends;
+    @BindView(R.id.iv_main_bottom_mine)
+    ImageView ivMainBottomMine;
+    @BindView(R.id.tv_main_bottom_mine)
+    TextView tvMainBottomMine;
+    @BindView(R.id.ll_main_bottom_mine)
+    LinearLayout llMainBottomMine;
 
-    @BindView(R.id.tv_test)
-    TextView tvTest;
+
+    private Unbinder unbinder;
+    private FragmentTransaction transaction;
+
+    private boolean needQuit = false;
+
+    private static final int WHAT_RESET_BACK = 1 ;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case WHAT_RESET_BACK:
+                    needQuit = false;
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        InitData();
+        unbinder = ButterKnife.bind(this);
+        setSelect(0);
     }
 
-    private void InitData() {
-        String url = ROBOT.URL;
-        //http://www.tuling123.com/openapi/api
-        RequestParams params = new RequestParams();
-        params.put("key", ROBOT.API_KEY);
-        params.put("info", "今天天气怎么样");
-        params.put("loc", "杭州市");
-        params.put("userid", "123456");
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.post(url, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (statusCode != 200) {
-                    Toast.makeText(MainActivity.this, "返回数据失败", Toast.LENGTH_SHORT).show();
+
+    private MsgFragment msgFragment;
+    private FriendsFragment friendsFragment;
+    private MineFragment mineFragment;
+
+    public void setSelect(int select) {
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+
+        //隐藏所有fragment的显示
+        hideFragments();
+        switch (select){
+            case 0:
+                if(msgFragment == null){
+                    msgFragment = new MsgFragment();
+                    transaction.add(R.id.fl_main,msgFragment);
                 }
-                String response = new String(responseBody);
-                JSONObject jsonObject = JSON.parseObject(response);
-                int code = jsonObject.getInteger("code");
-                String text = jsonObject.getString("text");
-                Log.e("print", text);
-                //返回code == 100000成功，返回code == 40001失败
-                if (code == 100000)
-                    doSuccess(text);
-                else if (code == 40001) {
-                    Toast.makeText(MainActivity.this, text, Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    Toast.makeText(MainActivity.this, "联网失败", Toast.LENGTH_SHORT).show();
-                    return;
+                transaction.show(msgFragment);
+
+                //改变图片颜色和文字颜色
+                ivMainBottomMsg.setImageResource(R.drawable.interactiveblue);
+                tvMainBottomMsg.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                break;
+            case 1:
+                if(friendsFragment == null){
+                    friendsFragment = new FriendsFragment();
+                    transaction.add(R.id.fl_main,friendsFragment);
                 }
+                transaction.show(friendsFragment);
 
-            }
+                //改变图片颜色和文字颜色
+                ivMainBottomFriends.setImageResource(R.drawable.addressblue);
+                tvMainBottomFriends.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                break;
+            case 2:
+                if(mineFragment == null){
+                    mineFragment = new MineFragment();
+                    transaction.add(R.id.fl_main,mineFragment);
+                }
+                transaction.show(mineFragment);
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(MainActivity.this, "Fail", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
+                //改变图片颜色和文字颜色
+                ivMainBottomMine.setImageResource(R.drawable.mine_fill);
+                tvMainBottomMine.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                break;
+        }
+        //提交事务
+//        transaction.commit();
     }
 
-    private void doSuccess(final String text) {
-        tvTest.setText(text);
+    private void hideFragments() {
+        ivMainBottomMsg.setImageResource(R.drawable.interactive);
+        ivMainBottomFriends.setImageResource(R.drawable.address);
+        ivMainBottomMine.setImageResource(R.drawable.mine);
+        tvMainBottomMsg.setTextColor(getResources().getColor(R.color.bottom_unselect));
+        tvMainBottomFriends.setTextColor(getResources().getColor(R.color.bottom_unselect));
+        tvMainBottomMine.setTextColor(getResources().getColor(R.color.bottom_unselect));
+
+        if(msgFragment == null){
+            transaction.hide(msgFragment);
+        }
+
+        if(friendsFragment == null){
+            transaction.hide(friendsFragment);
+        }
+
+        if(mineFragment == null){
+            transaction.hide(mineFragment);
+        }
     }
 
-    @OnClick(R.id.tv_test)
-    public void onViewClicked() {
-        startActivity(new Intent(MainActivity.this, ChatActivity.class));
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && !needQuit) {
+            Toast.makeText(this, "再点击一次退出当前应用", Toast.LENGTH_SHORT).show();
+            needQuit = true;
+            //发送延迟消息
+            handler.sendEmptyMessageDelayed(WHAT_RESET_BACK, 2000);
+            return true;
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }

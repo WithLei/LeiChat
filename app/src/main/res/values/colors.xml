@@ -8,4 +8,8 @@
     <color name="titleGray">#CCEEEEEE</color>
     <color name="emoji_keyboard_bg_light">#f6f5f5</color>
     <color name="background_tab_pressed">#6633B5E5</color>
+
+    <color name="title_back">#2F83C7</color>
+    <color name="bottom_unselect">#AAAAAA</color>
+    <color name="bottom_beselect">#3883D1</color>
 </resources>

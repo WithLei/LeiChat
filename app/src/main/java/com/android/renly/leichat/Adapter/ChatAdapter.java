@@ -1,19 +1,15 @@
 package com.android.renly.leichat.Adapter;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.renly.leichat.Activity.ChatActivity;
 import com.android.renly.leichat.Bean.Message;
-import com.android.renly.leichat.Common.MyApplication;
 import com.android.renly.leichat.Listener.OnChatItemClickListener;
 import com.android.renly.leichat.R;
 import com.rockerhieu.emojicon.EmojiconTextView;
@@ -39,6 +35,12 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             super(itemView);
             headPhoto = itemView.findViewById(R.id.chat_item_avatar);
             chat_item_content_text = itemView.findViewById(R.id.chat_item_content_text);
+            headPhoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "头像监听", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -73,22 +75,6 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         //设置数据
         holder.chat_item_content_text.setText(message.getContent());
         Picasso.with(context).load(message.getUserAvater()).into(holder.headPhoto);
-
-        if(listener != null){
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (view.getId()){
-                        case R.id.chat_item_content_text:
-                            listener.onTextClick(position);
-                            break;
-                        case R.id.chat_item_avatar:
-                            listener.onPhotoClick(position);
-                            break;
-                    }
-                }
-            });
-        }
     }
 
     @Override

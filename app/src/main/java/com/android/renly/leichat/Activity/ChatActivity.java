@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -74,7 +75,7 @@ public class ChatActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         unbinder = ButterKnife.bind(this);
-        rlTitle.bringToFront();
+//        rlTitle.bringToFront();
         initData();
         initList();
         initListener();
@@ -113,6 +114,7 @@ public class ChatActivity extends BaseActivity {
 
     private static final int WHAT_REQUEST_SUCCESS = 1;
     private static final int WHAT_REQUEST_ERROR = 2;
+    private static final int SCORLLTOBOTTOM = 3;
 
     private Handler handler = new Handler() {
         @Override
@@ -122,7 +124,10 @@ public class ChatActivity extends BaseActivity {
                     rvChatItem.setAdapter(chatAdapter);
                     break;
                 case WHAT_REQUEST_ERROR:
-                    Toast.makeText(ChatActivity.this, "加载数据失败111", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChatActivity.this, "加载数据失败", Toast.LENGTH_LONG).show();
+                    break;
+                case SCORLLTOBOTTOM :
+                    rvChatItem.scrollToPosition(chatAdapter.getItemCount()-1);
                     break;
             }
         }
@@ -131,20 +136,22 @@ public class ChatActivity extends BaseActivity {
     public ChatAdapter chatAdapter;
 
     private void initListener() {
-        chatAdapter.setOnChatItemClickListener(new OnChatItemClickListener() {
-            @Override
-            public void onPhotoClick(int position) {
-                Toast.makeText(ChatActivity.this, "onPhotoClick", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onTextClick(int position) {
-                Toast.makeText(ChatActivity.this, "onTextClick", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        rvChatItem.addOnItemTouchListener(new OnChatItemClickListener(this, new OnChatItemClickListener.OnItemTouchListener() {
+//            @Override
+//            public void onItemClick(View view, int position) {
+//                switch (position){
+//                    case 0:
+//                        Toast.makeText(ChatActivity.this, "0号位置", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case 1:
+//                        Toast.makeText(ChatActivity.this, "1号位置", Toast.LENGTH_SHORT).show();
+//                        break;
+//                }
+//            }
+//        }));
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, R.id.toolbox_layout_face, R.id.rl_title, R.id.rv_chat_item})
+    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, R.id.toolbox_layout_face, R.id.rl_title})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -159,6 +166,7 @@ public class ChatActivity extends BaseActivity {
                 //发送按钮
                 if (!toolboxEtMessage.getText().toString().isEmpty())
                     sendMessage();
+                scorllToBottom();
                 break;
             case R.id.toolbox_btn_face:
                 //表情按钮
@@ -167,19 +175,15 @@ public class ChatActivity extends BaseActivity {
                 break;
             case R.id.toolbox_btn_more:
                 //更多按钮
-                hideInputKeyboard();
                 toolboxLayoutFace.setVisibility(View.VISIBLE);
+                hideInputKeyboard();
                 break;
             case R.id.toolbox_et_message:
                 //输入框
                 toolboxLayoutFace.setVisibility(View.GONE);
+                scorllToBottom();
                 break;
             case R.id.rl_title:
-                toolboxLayoutFace.setVisibility(View.GONE);
-                hideInputKeyboard();
-                break;
-            case R.id.rv_chat_item:
-                //recyclerView
                 toolboxLayoutFace.setVisibility(View.GONE);
                 hideInputKeyboard();
                 break;
@@ -190,6 +194,8 @@ public class ChatActivity extends BaseActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         // 隐藏软键盘
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+
+        scorllToBottom();
     }
 
     /*
@@ -202,17 +208,24 @@ public class ChatActivity extends BaseActivity {
         if (msg != null){
             chatAdapter.addData(new Message("renly", img, msg, isSend));
             aiRobot = new AIRobot(ChatActivity.this,chatAdapter);
+            aiRobot.setRV(rvChatItem);
             aiRobot.getReply(msg);
         }
         else
             Toast.makeText(ChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
         toolboxEtMessage.setText("");
-        rvChatItem.scrollToPosition(chatAdapter.getItemCount()-1);
+    }
+
+    //滑动到recycler最低端
+    private void scorllToBottom() {
+        handler.sendEmptyMessageDelayed(SCORLLTOBOTTOM,400);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        //清除所有handler未处理的消息
+        handler.removeCallbacksAndMessages(null);
     }
 }
