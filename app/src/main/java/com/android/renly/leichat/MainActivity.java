@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +20,7 @@ import com.android.renly.leichat.Fragment.MsgFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class MainActivity extends BaseActivity {
@@ -49,12 +51,12 @@ public class MainActivity extends BaseActivity {
 
     private boolean needQuit = false;
 
-    private static final int WHAT_RESET_BACK = 1 ;
+    private static final int WHAT_RESET_BACK = 1;
 
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case WHAT_RESET_BACK:
                     needQuit = false;
                     break;
@@ -85,11 +87,11 @@ public class MainActivity extends BaseActivity {
 
         //隐藏所有fragment的显示
         hideFragments();
-        switch (select){
+        switch (select) {
             case 0:
-                if(msgFragment == null){
+                if (msgFragment == null) {
                     msgFragment = new MsgFragment();
-                    transaction.add(R.id.fl_main,msgFragment);
+                    transaction.add(R.id.fl_main, msgFragment);
                 }
                 transaction.show(msgFragment);
 
@@ -98,9 +100,9 @@ public class MainActivity extends BaseActivity {
                 tvMainBottomMsg.setTextColor(getResources().getColor(R.color.bottom_beselect));
                 break;
             case 1:
-                if(friendsFragment == null){
+                if (friendsFragment == null) {
                     friendsFragment = new FriendsFragment();
-                    transaction.add(R.id.fl_main,friendsFragment);
+                    transaction.add(R.id.fl_main, friendsFragment);
                 }
                 transaction.show(friendsFragment);
 
@@ -109,9 +111,9 @@ public class MainActivity extends BaseActivity {
                 tvMainBottomFriends.setTextColor(getResources().getColor(R.color.bottom_beselect));
                 break;
             case 2:
-                if(mineFragment == null){
+                if (mineFragment == null) {
                     mineFragment = new MineFragment();
-                    transaction.add(R.id.fl_main,mineFragment);
+                    transaction.add(R.id.fl_main, mineFragment);
                 }
                 transaction.show(mineFragment);
 
@@ -121,7 +123,7 @@ public class MainActivity extends BaseActivity {
                 break;
         }
         //提交事务
-//        transaction.commit();
+        transaction.commit();
     }
 
     private void hideFragments() {
@@ -132,15 +134,15 @@ public class MainActivity extends BaseActivity {
         tvMainBottomFriends.setTextColor(getResources().getColor(R.color.bottom_unselect));
         tvMainBottomMine.setTextColor(getResources().getColor(R.color.bottom_unselect));
 
-        if(msgFragment == null){
+        if (msgFragment != null) {
             transaction.hide(msgFragment);
         }
 
-        if(friendsFragment == null){
+        if (friendsFragment != null) {
             transaction.hide(friendsFragment);
         }
 
-        if(mineFragment == null){
+        if (mineFragment != null) {
             transaction.hide(mineFragment);
         }
     }
@@ -162,5 +164,20 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    @OnClick({R.id.ll_main_bottom_msg, R.id.ll_main_bottom_friends, R.id.ll_main_bottom_mine})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.ll_main_bottom_msg:
+                setSelect(0);
+                break;
+            case R.id.ll_main_bottom_friends:
+                setSelect(1);
+                break;
+            case R.id.ll_main_bottom_mine:
+                setSelect(2);
+                break;
+        }
     }
 }
