@@ -4,8 +4,7 @@
     android:layout_height="50dp"
     android:layout_alignParentStart="true"
     android:id="@+id/rl_title"
-    android:background="@color/titleGray"
-    >
+    android:background="@color/red">
     <ImageView
         android:id="@+id/iv_title_back"
         android:layout_width="40dp"
@@ -19,6 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:text="对象姓名"/>
 

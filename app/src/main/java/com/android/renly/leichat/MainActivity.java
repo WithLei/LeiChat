@@ -44,6 +44,12 @@ public class MainActivity extends BaseActivity {
     TextView tvMainBottomMine;
     @BindView(R.id.ll_main_bottom_mine)
     LinearLayout llMainBottomMine;
+    @BindView(R.id.iv_title_back)
+    ImageView ivTitleBack;
+    @BindView(R.id.tv_title_name)
+    TextView tvTitleName;
+    @BindView(R.id.iv_title_info)
+    ImageView ivTitleInfo;
 
 
     private Unbinder unbinder;
@@ -68,7 +74,13 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         unbinder = ButterKnife.bind(this);
+        initView();
         setSelect(0);
+    }
+
+    private void initView() {
+        ivTitleBack.setVisibility(View.GONE);
+        ivTitleInfo.setImageResource(R.drawable.addpeople);
     }
 
     @Override
@@ -96,8 +108,9 @@ public class MainActivity extends BaseActivity {
                 transaction.show(msgFragment);
 
                 //改变图片颜色和文字颜色
-                ivMainBottomMsg.setImageResource(R.drawable.interactiveblue);
-                tvMainBottomMsg.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                ivMainBottomMsg.setImageResource(R.drawable.interactivered);
+                tvMainBottomMsg.setTextColor(getResources().getColor(R.color.red));
+                tvTitleName.setText("消息");
                 break;
             case 1:
                 if (friendsFragment == null) {
@@ -107,8 +120,9 @@ public class MainActivity extends BaseActivity {
                 transaction.show(friendsFragment);
 
                 //改变图片颜色和文字颜色
-                ivMainBottomFriends.setImageResource(R.drawable.addressblue);
-                tvMainBottomFriends.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                ivMainBottomFriends.setImageResource(R.drawable.addressred);
+                tvMainBottomFriends.setTextColor(getResources().getColor(R.color.red));
+                tvTitleName.setText("好友");
                 break;
             case 2:
                 if (mineFragment == null) {
@@ -119,7 +133,8 @@ public class MainActivity extends BaseActivity {
 
                 //改变图片颜色和文字颜色
                 ivMainBottomMine.setImageResource(R.drawable.mine_fill);
-                tvMainBottomMine.setTextColor(getResources().getColor(R.color.bottom_beselect));
+                tvMainBottomMine.setTextColor(getResources().getColor(R.color.red));
+                tvTitleName.setText("我");
                 break;
         }
         //提交事务

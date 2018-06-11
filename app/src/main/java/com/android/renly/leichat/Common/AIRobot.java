@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.android.renly.leichat.Adapter.ChatAdapter;
-import com.android.renly.leichat.MainActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -20,7 +19,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class AIRobot {
     private Context context;
-    private ChatAdapter chatAdapter;
+    private ChatAdapter ChatAdapter;
     private static final String url = ROBOT.URL;
     private RequestParams params;
     private AsyncHttpClient client;
@@ -28,7 +27,7 @@ public class AIRobot {
 
     private RecyclerView rv;
 
-    final String imgReply = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/hkAN7ZOEiRPDuiQq.ax0IjNFCFaV70x6mr48jjYUhR8!/b/dFkAAAAAAAAA&bo=RAJEAkQCRAIRCT4!&rf=viewer_4";
+    final String imgReply = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/F30x9B4k6qFpl6acDl66bAQ1Lg2BQrvWWP7.SQ8s8uI!/b/dAgBAAAAAAAA&bo=UAFYAVABWAEDCSw!&rf=viewer_4";
     private static final boolean isSend = true;
     private static final boolean isRecieve = false;
     //回传
@@ -39,8 +38,8 @@ public class AIRobot {
             switch (msg.what){
                 case GET_REPLY:
                     reply = msg.getData().getString("content");
-                    chatAdapter.addData(new com.android.renly.leichat.Bean.Message("renly",imgReply,reply,isRecieve));
-                    rv.scrollToPosition(chatAdapter.getItemCount()-1);
+                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message("AIRobot",imgReply,reply,isRecieve));
+                    rv.scrollToPosition(ChatAdapter.getItemCount()-1);
                     Log.e("TAG",reply);
                     break;
             }
@@ -51,9 +50,9 @@ public class AIRobot {
         this.context = context;
     }
 
-    public AIRobot(Context context,ChatAdapter chatAdapter){
+    public AIRobot(Context context,ChatAdapter ChatAdapter){
         this.context = context;
-        this.chatAdapter = chatAdapter;
+        this.ChatAdapter = ChatAdapter;
     }
 
     public void getReply(String content) {

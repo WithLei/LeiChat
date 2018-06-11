@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +18,8 @@ import android.widget.Toast;
 
 import com.android.renly.leichat.Adapter.ChatAdapter;
 import com.android.renly.leichat.Adapter.mLinearLayoutManager;
+import com.android.renly.leichat.Bean.Message;
+import com.android.renly.leichat.Common.AIRobot;
 import com.android.renly.leichat.Common.BaseActivity;
 import com.android.renly.leichat.R;
 import com.android.renly.leichat.UIUtils.PagerSlidingTabStrip;
@@ -32,11 +33,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class ChatActivity extends BaseActivity {
+public class AIChatActivity extends BaseActivity {
     @BindView(R.id.iv_title_back)
     ImageView ivTitleBack;
-    @BindView(R.id.rl_title)
-    RelativeLayout rlTitle;
+    @BindView(R.id.tv_title_name)
+    TextView tvTitleName;
+    @BindView(R.id.iv_title_info)
+    ImageView ivTitleInfo;
     @BindView(R.id.toolbox_btn_send)
     Button toolboxBtnSend;
     @BindView(R.id.toolbox_btn_face)
@@ -51,14 +54,13 @@ public class ChatActivity extends BaseActivity {
     ViewPager toolboxPagersFace;
     @BindView(R.id.toolbox_tabs)
     PagerSlidingTabStrip toolboxTabs;
+    //下方隐藏菜单
     @BindView(R.id.toolbox_layout_face)
     RelativeLayout toolboxLayoutFace;
-    @BindView(R.id.iv_title_info)
-    ImageView ivTitleInfo;
-    @BindView(R.id.tv_title_name)
-    TextView tvTitleName;
     @BindView(R.id.rv_chat_item)
     RecyclerView rvChatItem;
+    @BindView(R.id.rl_title)
+    RelativeLayout rlTitle;
 
     @Override
     protected int getLayoutId() {
@@ -66,16 +68,13 @@ public class ChatActivity extends BaseActivity {
     }
 
     private Unbinder unbinder;
-    private ChatAdapter ChatAdapter;
     private String headPhoto;
-    private List<com.android.renly.leichat.Bean.Message>msgs;
-    private static final boolean isSend = true;
-    private static final boolean isRecieve = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         unbinder = ButterKnife.bind(this);
+//        rlTitle.bringToFront();
         initView();
         initData();
         initList();
@@ -88,37 +87,20 @@ public class ChatActivity extends BaseActivity {
         tvTitleName.setText(name);
     }
 
+    private List<Message> msgs;
+    private static final boolean isSend = true;
+    private static final boolean isRecieve = false;
+
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new com.android.renly.leichat.Bean.Message("renly", img, "今日夜色真美", isSend));
-        msgs.add(new com.android.renly.leichat.Bean.Message("AI机器人", headPhoto, "yep", isRecieve));
+        msgs.add(new Message("renly", img, "今日夜色真美", isSend));
+        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve));
     }
 
-    private static final int WHAT_REQUEST_SUCCESS = 1;
-    private static final int WHAT_REQUEST_ERROR = 2;
-    private static final int SCORLLTOBOTTOM = 3;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case WHAT_REQUEST_SUCCESS:
-                    rvChatItem.setAdapter(ChatAdapter);
-                    break;
-                case WHAT_REQUEST_ERROR:
-                    Toast.makeText(ChatActivity.this, "加载数据失败", Toast.LENGTH_LONG).show();
-                    break;
-                case SCORLLTOBOTTOM:
-                    rvChatItem.scrollToPosition(ChatAdapter.getItemCount() - 1);
-                    break;
-            }
-        }
-    };
-
     private void initList() {
-        ChatAdapter = new ChatAdapter(msgs, ChatActivity.this);
-        mLinearLayoutManager layoutManager = new mLinearLayoutManager(ChatActivity.this);
+        ChatAdapter = new ChatAdapter(msgs, AIChatActivity.this);
+        mLinearLayoutManager layoutManager = new mLinearLayoutManager(AIChatActivity.this);
         layoutManager.setScrollEnabled(true);
         rvChatItem.setLayoutManager(layoutManager);
         new Thread() {
@@ -135,7 +117,30 @@ public class ChatActivity extends BaseActivity {
         }.start();
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.rl_title, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, })
+    private static final int WHAT_REQUEST_SUCCESS = 1;
+    private static final int WHAT_REQUEST_ERROR = 2;
+    private static final int SCORLLTOBOTTOM = 3;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case WHAT_REQUEST_SUCCESS:
+                    rvChatItem.setAdapter(ChatAdapter);
+                    break;
+                case WHAT_REQUEST_ERROR:
+                    Toast.makeText(AIChatActivity.this, "加载数据失败", Toast.LENGTH_LONG).show();
+                    break;
+                case SCORLLTOBOTTOM :
+                    rvChatItem.scrollToPosition(ChatAdapter.getItemCount()-1);
+                    break;
+            }
+        }
+    };
+
+    public ChatAdapter ChatAdapter;
+
+    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, R.id.toolbox_layout_face, R.id.rl_title})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -144,11 +149,7 @@ public class ChatActivity extends BaseActivity {
                 break;
             case R.id.iv_title_info:
                 //好友用户信息界面
-                startActivity(new Intent(ChatActivity.this, UserInfoAcitivity.class));
-                break;
-            case R.id.rl_title:
-                toolboxLayoutFace.setVisibility(View.GONE);
-                hideInputKeyboard();
+                startActivity(new Intent(AIChatActivity.this, UserInfoAcitivity.class));
                 break;
             case R.id.toolbox_btn_send:
                 //发送按钮
@@ -171,21 +172,11 @@ public class ChatActivity extends BaseActivity {
                 toolboxLayoutFace.setVisibility(View.GONE);
                 scorllToBottom();
                 break;
+            case R.id.rl_title:
+                toolboxLayoutFace.setVisibility(View.GONE);
+                hideInputKeyboard();
+                break;
         }
-    }
-
-    /*
-   点击发送消息
-    */
-    private void sendMessage() {
-        final String msg = toolboxEtMessage.getText().toString();
-        final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        if (msg != null){
-            ChatAdapter.addData(new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend));
-        }
-        else
-            Toast.makeText(ChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
-        toolboxEtMessage.setText("");
     }
 
     private void hideInputKeyboard() {
@@ -196,9 +187,27 @@ public class ChatActivity extends BaseActivity {
         scorllToBottom();
     }
 
+    /*
+    点击发送消息
+     */
+    private AIRobot aiRobot;
+    private void sendMessage() {
+        final String msg = toolboxEtMessage.getText().toString();
+        final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
+        if (msg != null){
+            ChatAdapter.addData(new Message("renly", img, msg, isSend));
+            aiRobot = new AIRobot(AIChatActivity.this, ChatAdapter);
+            aiRobot.setRV(rvChatItem);
+            aiRobot.getReply(msg);
+        }
+        else
+            Toast.makeText(AIChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
+        toolboxEtMessage.setText("");
+    }
+
     //滑动到recycler最低端
     private void scorllToBottom() {
-        handler.sendEmptyMessageDelayed(SCORLLTOBOTTOM, 400);
+        handler.sendEmptyMessageDelayed(SCORLLTOBOTTOM,400);
     }
 
     @Override

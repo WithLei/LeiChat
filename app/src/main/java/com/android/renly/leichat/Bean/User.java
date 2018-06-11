@@ -8,6 +8,16 @@ public class User {
     private String password;
     private List<User>friends;
 
+    //朋友列表初始化
+    public User(String name,String headPhoto){
+        this.name = name;
+        this.headPhoto = headPhoto;
+    }
+
+    public User(){
+        super();
+    }
+
     public String getName() {
         return name;
     }

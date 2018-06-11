@@ -12,4 +12,5 @@
     <color name="title_back">#2F83C7</color>
     <color name="bottom_unselect">#AAAAAA</color>
     <color name="bottom_beselect">#3883D1</color>
+    <color name="red">#CC0000</color>
 </resources>
