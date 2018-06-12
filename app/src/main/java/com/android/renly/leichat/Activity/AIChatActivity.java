@@ -94,8 +94,8 @@ public class AIChatActivity extends BaseActivity {
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new Message("renly", img, "今日夜色真美", isSend));
-        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve));
+        msgs.add(new Message("renly", img, "今日夜色真美", isSend,Message.MSG_STATE_SUCCESS));
+        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve,Message.MSG_STATE_SUCCESS));
     }
 
     private void initList() {
@@ -149,7 +149,7 @@ public class AIChatActivity extends BaseActivity {
                 break;
             case R.id.iv_title_info:
                 //好友用户信息界面
-                startActivity(new Intent(AIChatActivity.this, UserInfoAcitivity.class));
+                startActivity(new Intent(AIChatActivity.this, UserInfoActivity.class));
                 break;
             case R.id.toolbox_btn_send:
                 //发送按钮
@@ -195,7 +195,7 @@ public class AIChatActivity extends BaseActivity {
         final String msg = toolboxEtMessage.getText().toString();
         final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
         if (msg != null){
-            ChatAdapter.addData(new Message("renly", img, msg, isSend));
+            ChatAdapter.addData(new Message("renly", img, msg, isSend,Message.MSG_STATE_SUCCESS));
             aiRobot = new AIRobot(AIChatActivity.this, ChatAdapter);
             aiRobot.setRV(rvChatItem);
             aiRobot.getReply(msg);

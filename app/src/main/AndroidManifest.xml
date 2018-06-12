@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activity.AIChatActivity" />
-        <activity android:name=".Activity.UserInfoAcitivity" />
+        <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.ChatActivity" />
     </application>
 

@@ -6,15 +6,15 @@ import java.util.Date;
 
 public class Message {
     //发送类型
-    private static final int MSG_SEND_TEXT = 1;
-    private static final int MSG_SEND_PHOTO = 2;
-    private static final int MSG_SEND_FACE = 3;
-    private static final int MSG_SEND_VOICE = 4;
+    public static final int MSG_SEND_TEXT = 1;
+    public static final int MSG_SEND_PHOTO = 2;
+    public static final int MSG_SEND_FACE = 3;
+    public static final int MSG_SEND_VOICE = 4;
 
     //发送状态
-    private static final int MSG_STATE_SUCCESS = 1;
-    private static final int MSG_STATE_FAIL = 2;
-    private static final int MSG_STATE_LOADING = 3;
+    public static final int MSG_STATE_SUCCESS = 1;
+    public static final int MSG_STATE_FAIL = 2;
+    public static final int MSG_STATE_LOADING = 3;
 
     private Long id;
     private int type;//1-text 2-photo 3-face 4-voice
@@ -30,11 +30,12 @@ public class Message {
     private boolean isSend;
     private boolean sendSuccess;
 
-    public Message(String userName, String userAvater, String content, boolean isSend) {
+    public Message(String userName, String userAvater, String content, boolean isSend, int state) {
         this.userName = userName;
         this.userAvater = userAvater;
         this.content = content;
         this.isSend = isSend;
+        this.state = state;
     }
 
     public Long getId() {

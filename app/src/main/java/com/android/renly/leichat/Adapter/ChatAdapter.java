@@ -30,9 +30,16 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView headPhoto;
         EmojiconTextView chat_item_content_text;
+        ImageView failImg;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context,"lalala",Toast.LENGTH_SHORT).show();
+                }
+            });
             headPhoto = itemView.findViewById(R.id.chat_item_avatar);
             chat_item_content_text = itemView.findViewById(R.id.chat_item_content_text);
             headPhoto.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +48,7 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
                     Toast.makeText(context, "头像监听", Toast.LENGTH_SHORT).show();
                 }
             });
+            failImg = itemView.findViewById(R.id.chat_item_fail);
         }
     }
 
@@ -75,6 +83,10 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         //设置数据
         holder.chat_item_content_text.setText(message.getContent());
         Picasso.with(context).load(message.getUserAvater()).into(holder.headPhoto);
+        if(message.getState() == Message.MSG_STATE_FAIL)
+            holder.failImg.setVisibility(View.VISIBLE);
+        else
+            holder.failImg.setVisibility(View.GONE);
     }
 
     @Override
@@ -88,6 +100,10 @@ public  class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
     public void addData(Message msg){
         msgList.add(getItemCount(),msg);
+        refresh();
+    }
+
+    public void refresh(){
         notifyItemInserted(getItemCount());
     }
 }
