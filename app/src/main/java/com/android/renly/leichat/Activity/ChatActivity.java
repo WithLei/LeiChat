@@ -1,5 +1,6 @@
 package com.android.renly.leichat.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -19,8 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.android.renly.leichat.Adapter.ChatAdapter;
 import com.android.renly.leichat.Adapter.mLinearLayoutManager;
+import com.android.renly.leichat.Bean.User;
 import com.android.renly.leichat.Common.BaseActivity;
 import com.android.renly.leichat.Common.NetConfig;
 import com.android.renly.leichat.R;
@@ -41,8 +43,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChatActivity extends BaseActivity implements Runnable{
+public class ChatActivity extends BaseActivity implements Runnable {
     @BindView(R.id.iv_title_back)
     ImageView ivTitleBack;
     @BindView(R.id.rl_title)
@@ -69,6 +72,8 @@ public class ChatActivity extends BaseActivity implements Runnable{
     TextView tvTitleName;
     @BindView(R.id.rv_chat_item)
     RecyclerView rvChatItem;
+    @BindView(R.id.iv_main_headImg)
+    CircleImageView ivMainHeadImg;
 
     @Override
     protected int getLayoutId() {
@@ -78,7 +83,7 @@ public class ChatActivity extends BaseActivity implements Runnable{
     private Unbinder unbinder;
     private ChatAdapter ChatAdapter;
     private String toUserHeadPhoto;
-    private List<com.android.renly.leichat.Bean.Message>msgs;
+    private List<com.android.renly.leichat.Bean.Message> msgs;
     private static final boolean isSend = true;
     private static final boolean isRecieve = false;
 
@@ -95,28 +100,33 @@ public class ChatActivity extends BaseActivity implements Runnable{
         initList();
         //启动线程，连接服务器，并用死循环守候，接收服务器发送过来的数据
         new Thread(this).start();
+        //发空包通知服务端
+        handler.sendEmptyMessageDelayed(EMPTY_MESSAGE,1000);
     }
 
     private Intent intent;
-    private String ToUserName;
+    private String toUserName;
+
     private void initView() {
         intent = getIntent();
-        ToUserName = intent.getExtras().get("name").toString();
+        toUserName = intent.getExtras().get("name").toString();
         toUserHeadPhoto = intent.getExtras().get("img").toString();
-        tvTitleName.setText(ToUserName);
+        tvTitleName.setText(toUserName);
+        ivMainHeadImg.setVisibility(View.GONE);
     }
 
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new com.android.renly.leichat.Bean.Message("renly", img, "今日夜色真美", isSend , 1));
-        msgs.add(new com.android.renly.leichat.Bean.Message(ToUserName, toUserHeadPhoto, "yep", isRecieve , 1));
+        msgs.add(new com.android.renly.leichat.Bean.Message("renly", img, "今日夜色真美", isSend, 1));
+        msgs.add(new com.android.renly.leichat.Bean.Message(toUserName, toUserHeadPhoto, "yep", isRecieve, 1));
     }
 
     private static final int WHAT_REQUEST_SUCCESS = 1;
     private static final int WHAT_REQUEST_ERROR = 2;
     private static final int SCORLLTOBOTTOM = 3;
     private static final int GET_MESSAGE = 4;
+    private static final int EMPTY_MESSAGE = 5;
 
     private Handler handler = new Handler() {
         @Override
@@ -132,14 +142,17 @@ public class ChatActivity extends BaseActivity implements Runnable{
                     rvChatItem.scrollToPosition(ChatAdapter.getItemCount() - 1);
                     break;
                 case GET_MESSAGE:
-                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(ToUserName, toUserHeadPhoto, (String) message.obj, isRecieve , 1));
+                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserHeadPhoto, (String) message.obj, isRecieve, 1));
+                    break;
+                case EMPTY_MESSAGE:
+                    ChatActivity.this.sendEmptyMessage();
                     break;
             }
         }
     };
 
     private void initList() {
-        ChatAdapter = new ChatAdapter(msgs, ChatActivity.this);
+        ChatAdapter = new ChatAdapter(msgs, ChatActivity.this,this);
         mLinearLayoutManager layoutManager = new mLinearLayoutManager(ChatActivity.this);
         layoutManager.setScrollEnabled(true);
         rvChatItem.setLayoutManager(layoutManager);
@@ -157,7 +170,7 @@ public class ChatActivity extends BaseActivity implements Runnable{
         }.start();
     }
 
-    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.rl_title, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message, })
+    @OnClick({R.id.iv_title_back, R.id.iv_title_info, R.id.rl_title, R.id.toolbox_btn_send, R.id.toolbox_btn_face, R.id.toolbox_btn_more, R.id.toolbox_et_message,})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_title_back:
@@ -202,33 +215,68 @@ public class ChatActivity extends BaseActivity implements Runnable{
     private void sendMessage() {
         final String msg = toolboxEtMessage.getText().toString();
         final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        com.android.renly.leichat.Bean.Message sendMsg = null ;
-        if (msg != null){
+        com.android.renly.leichat.Bean.Message sendMsg = null;
+        if (msg != null) {
             if (socket.isConnected()) {//如果服务器连接
                 if (!socket.isOutputShutdown()) {//如果输出流没有断开
                     sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_SUCCESS);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            out.println(msg);//点击按钮发送消息
+                            String jsonMsg = toJsonMessage(msg);
+                            out.println(jsonMsg);//点击按钮发送消息
                         }
                     }).start();
-                }
-                else{//输出流断开
+                } else {//输出流断开
                     sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
                 }
-            }
-            else{//服务器连接未成功
+            } else {//服务器连接未成功
                 sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
             }
-        }
-        else
+        } else
             Toast.makeText(ChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
         ChatAdapter.addData(sendMsg);
         toolboxEtMessage.setText("");
     }
 
-    private void hideInputKeyboard() {
+    /**
+     * 发送空包通知服务器
+     */
+    private void sendEmptyMessage() {
+            if (socket.isConnected()) {//如果服务器连接
+                if (!socket.isOutputShutdown()) {//如果输出流没有断开
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String msg = toEmptyFastJson();
+                            out.println(msg);//发送空包
+                        }
+                    }).start();
+                }
+            }
+    }
+
+    /**
+     * 转换Json数据
+     */
+    private String toJsonMessage(String msg){
+        com.android.renly.leichat.Bean.Message jsonMsg = new com.android.renly.leichat.Bean.Message();
+        jsonMsg.setForm("content");
+        jsonMsg.setContent(msg);
+        jsonMsg.setToUserId(toUserName);
+
+        return JSON.toJSONString(jsonMsg);
+    }
+
+    //对message进行序列化 成为json数据
+    private String toEmptyFastJson(){
+        com.android.renly.leichat.Bean.Message msg = new com.android.renly.leichat.Bean.Message();
+        msg.setForm("test");
+        msg.setFromUserId(toUserName + "rua");
+        return JSON.toJSONString(msg);
+    }
+
+    public void hideInputKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         // 隐藏软键盘
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -285,7 +333,7 @@ public class ChatActivity extends BaseActivity implements Runnable{
                             if ((getLine = in.readLine()) != null) {//读取接收的信息
                                 getLine += "\n";
                                 Message message = new Message();
-                                message.obj=getLine;
+                                message.obj = getLine;
                                 message.what = GET_MESSAGE;
                                 handler.sendMessage(message);//通知UI更新
                                 scorllToBottom();
@@ -304,12 +352,13 @@ public class ChatActivity extends BaseActivity implements Runnable{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                out.println("exit");//点击按钮发送消息
-            }
-        }).start();
+        if(out != null)
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    out.println("exit");//点击按钮发送消息
+                }
+            }).start();
         unbinder.unbind();
         //清除所有handler未处理的消息
         handler.removeCallbacksAndMessages(null);

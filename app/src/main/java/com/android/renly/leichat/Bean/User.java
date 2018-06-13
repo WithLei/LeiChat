@@ -3,6 +3,7 @@ package com.android.renly.leichat.Bean;
 import java.util.List;
 
 public class User {
+    private String id;
     private String name;
     private String headPhoto;
     private String password;
@@ -16,6 +17,14 @@ public class User {
 
     public User(){
         super();
+    }
+
+    public String getId(){
+        return this.id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 
     public String getName() {

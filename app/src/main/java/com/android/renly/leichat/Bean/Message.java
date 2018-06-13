@@ -24,11 +24,18 @@ public class Message {
     private String userAvater;
 
     private String content;
-    private Drawable phoot ;
     private Date time;
 
     private boolean isSend;
     private boolean sendSuccess;
+
+    private String fromUserId;
+    private String toUserId;
+    private String form;//判断是否空包 空包为type
+
+    public Message(){
+        super();
+    }
 
     public Message(String userName, String userAvater, String content, boolean isSend, int state) {
         this.userName = userName;
@@ -36,6 +43,14 @@ public class Message {
         this.content = content;
         this.isSend = isSend;
         this.state = state;
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
     }
 
     public Long getId() {
@@ -108,5 +123,21 @@ public class Message {
 
     public void setSendSuccess(boolean sendSuccess) {
         this.sendSuccess = sendSuccess;
+    }
+
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(String fromUserId) {
+        this.fromUserId = fromUserId;
+    }
+
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
     }
 }

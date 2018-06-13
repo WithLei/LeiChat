@@ -32,6 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AIChatActivity extends BaseActivity {
     @BindView(R.id.iv_title_back)
@@ -61,6 +62,8 @@ public class AIChatActivity extends BaseActivity {
     RecyclerView rvChatItem;
     @BindView(R.id.rl_title)
     RelativeLayout rlTitle;
+    @BindView(R.id.iv_main_headImg)
+    CircleImageView ivMainHeadImg;
 
     @Override
     protected int getLayoutId() {
@@ -85,6 +88,7 @@ public class AIChatActivity extends BaseActivity {
         String name = intent.getExtras().get("name").toString();
         headPhoto = intent.getExtras().get("img").toString();
         tvTitleName.setText(name);
+        ivMainHeadImg.setVisibility(View.GONE);
     }
 
     private List<Message> msgs;
@@ -94,12 +98,12 @@ public class AIChatActivity extends BaseActivity {
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new Message("renly", img, "今日夜色真美", isSend,Message.MSG_STATE_SUCCESS));
-        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve,Message.MSG_STATE_SUCCESS));
+        msgs.add(new Message("renly", img, "今日夜色真美", isSend, Message.MSG_STATE_SUCCESS));
+        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve, Message.MSG_STATE_SUCCESS));
     }
 
     private void initList() {
-        ChatAdapter = new ChatAdapter(msgs, AIChatActivity.this);
+        ChatAdapter = new ChatAdapter(msgs, AIChatActivity.this,this);
         mLinearLayoutManager layoutManager = new mLinearLayoutManager(AIChatActivity.this);
         layoutManager.setScrollEnabled(true);
         rvChatItem.setLayoutManager(layoutManager);
@@ -131,8 +135,8 @@ public class AIChatActivity extends BaseActivity {
                 case WHAT_REQUEST_ERROR:
                     Toast.makeText(AIChatActivity.this, "加载数据失败", Toast.LENGTH_LONG).show();
                     break;
-                case SCORLLTOBOTTOM :
-                    rvChatItem.scrollToPosition(ChatAdapter.getItemCount()-1);
+                case SCORLLTOBOTTOM:
+                    rvChatItem.scrollToPosition(ChatAdapter.getItemCount() - 1);
                     break;
             }
         }
@@ -179,7 +183,7 @@ public class AIChatActivity extends BaseActivity {
         }
     }
 
-    private void hideInputKeyboard() {
+    public void hideInputKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         // 隐藏软键盘
         imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -191,23 +195,23 @@ public class AIChatActivity extends BaseActivity {
     点击发送消息
      */
     private AIRobot aiRobot;
+
     private void sendMessage() {
         final String msg = toolboxEtMessage.getText().toString();
         final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        if (msg != null){
-            ChatAdapter.addData(new Message("renly", img, msg, isSend,Message.MSG_STATE_SUCCESS));
+        if (msg != null) {
+            ChatAdapter.addData(new Message("renly", img, msg, isSend, Message.MSG_STATE_SUCCESS));
             aiRobot = new AIRobot(AIChatActivity.this, ChatAdapter);
             aiRobot.setRV(rvChatItem);
             aiRobot.getReply(msg);
-        }
-        else
+        } else
             Toast.makeText(AIChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
         toolboxEtMessage.setText("");
     }
 
     //滑动到recycler最低端
     private void scorllToBottom() {
-        handler.sendEmptyMessageDelayed(SCORLLTOBOTTOM,400);
+        handler.sendEmptyMessageDelayed(SCORLLTOBOTTOM, 400);
     }
 
     @Override
