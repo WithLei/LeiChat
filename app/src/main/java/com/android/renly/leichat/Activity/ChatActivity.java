@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -82,7 +83,6 @@ public class ChatActivity extends BaseActivity implements Runnable {
 
     private Unbinder unbinder;
     private ChatAdapter ChatAdapter;
-    private String toUserHeadPhoto;
     private List<com.android.renly.leichat.Bean.Message> msgs;
     private static final boolean isSend = true;
     private static final boolean isRecieve = false;
@@ -105,21 +105,27 @@ public class ChatActivity extends BaseActivity implements Runnable {
     }
 
     private Intent intent;
+    private String toUserAvater;
+    private String fromUserAvater;
     private String toUserName;
+    private String fromUserName;
 
     private void initView() {
         intent = getIntent();
-        toUserName = intent.getExtras().get("name").toString();
-        toUserHeadPhoto = intent.getExtras().get("img").toString();
+        toUserName = intent.getExtras().get("toUserName").toString();
+        toUserAvater = intent.getExtras().get("toUserAvater").toString();
         tvTitleName.setText(toUserName);
         ivMainHeadImg.setVisibility(View.GONE);
+
+        SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        fromUserName = sp.getString("userName", "");
     }
 
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new com.android.renly.leichat.Bean.Message("renly", img, "今日夜色真美", isSend, 1));
-        msgs.add(new com.android.renly.leichat.Bean.Message(toUserName, toUserHeadPhoto, "yep", isRecieve, 1));
+        msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName, img, "测试发送", isSend, 1));
+        msgs.add(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, "测试回复", isRecieve, 1));
     }
 
     private static final int WHAT_REQUEST_SUCCESS = 1;
@@ -142,7 +148,7 @@ public class ChatActivity extends BaseActivity implements Runnable {
                     rvChatItem.scrollToPosition(ChatAdapter.getItemCount() - 1);
                     break;
                 case GET_MESSAGE:
-                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserHeadPhoto, (String) message.obj, isRecieve, 1));
+                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, (String) message.obj, isRecieve, 1));
                     break;
                 case EMPTY_MESSAGE:
                     ChatActivity.this.sendEmptyMessage();
@@ -272,7 +278,7 @@ public class ChatActivity extends BaseActivity implements Runnable {
     private String toEmptyFastJson(){
         com.android.renly.leichat.Bean.Message msg = new com.android.renly.leichat.Bean.Message();
         msg.setForm("test");
-        msg.setFromUserId(toUserName + "rua");
+        msg.setFromUserId(fromUserName);
         return JSON.toJSONString(msg);
     }
 

@@ -18,13 +18,13 @@
         <activity android:name=".Activity.AIChatActivity" />
         <activity android:name=".Activity.UserInfoActivity" />
         <activity android:name=".Activity.ChatActivity" />
-        <activity android:name=".Activity.LoginActivity">
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.WelcomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 

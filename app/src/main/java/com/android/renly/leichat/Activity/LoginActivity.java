@@ -2,19 +2,24 @@ package com.android.renly.leichat.Activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private ImageView iv_show_pwd;
     private Button btn_login;
     private TextView forget_password;
+    private LinearLayout root;
 
     private int screenHeight = 0;//屏幕高度
     private float scale = 0.8f; //logo缩放比例
@@ -52,6 +58,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         initListener();
         keyboardWatcher = new KeyboardWatcher(this.findViewById(Window.ID_ANDROID_CONTENT));
         keyboardWatcher.addSoftKeyboardStateListener(this);
+        isLogin();
+    }
+
+    private void isLogin() {
+        //查看本地是否有用户的登录信息
+        SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String name = sp.getString("userName", "");
+        if(!TextUtils.isEmpty(name)){
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
     private boolean flag = false;
@@ -68,6 +85,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         btn_login.setOnClickListener(this);
         forget_password = findViewById(R.id.forget_password);
         body = findViewById(R.id.body);
+        root = findViewById(R.id.root);
         screenHeight = getResources().getDisplayMetrics().heightPixels; //获取屏幕高度
         findViewById(R.id.close).setOnClickListener(this);
     }
@@ -76,6 +94,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         iv_clean_phone.setOnClickListener(this);
         clean_password.setOnClickListener(this);
         iv_show_pwd.setOnClickListener(this);
+        root.setOnClickListener(this);
         et_mobile.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -209,8 +228,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 finish();
                 break;
             case R.id.btn_login:
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                if(!TextUtils.isEmpty(et_mobile.getText())){
+                    // 获取SharedPreferences对象
+                    SharedPreferences sharedPre = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                    // 获取Editor对象
+                    SharedPreferences.Editor editor = sharedPre.edit();
+                    // 设置参数
+                    editor.putString("userName", et_mobile.getText().toString());
+                    editor.apply();
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    finish();
+                }else{
+                    Toast.makeText(this, "请输入账号密码", Toast.LENGTH_SHORT).show();
+                }
+                
                 break;
             case R.id.iv_clean_phone:
                 et_mobile.setText("");
@@ -232,6 +263,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 if (!TextUtils.isEmpty(pwd))
                     et_password.setSelection(pwd.length());
                 break;
+            case R.id.root:
+                hideInputKeyboard();
+                break;
         }
+    }
+
+    public void hideInputKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        // 隐藏软键盘
+        imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
     }
 }

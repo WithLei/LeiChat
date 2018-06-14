@@ -2,6 +2,7 @@ package com.android.renly.leichat.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -71,7 +72,9 @@ public class AIChatActivity extends BaseActivity {
     }
 
     private Unbinder unbinder;
-    private String headPhoto;
+    private String toUserAvater;
+    private String fromUserName;
+    private String toUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +88,13 @@ public class AIChatActivity extends BaseActivity {
 
     private void initView() {
         Intent intent = getIntent();
-        String name = intent.getExtras().get("name").toString();
-        headPhoto = intent.getExtras().get("img").toString();
-        tvTitleName.setText(name);
+        toUserName = intent.getExtras().get("toUserName").toString();
+        toUserAvater = intent.getExtras().get("toUserAvater").toString();
+        tvTitleName.setText(toUserName);
         ivMainHeadImg.setVisibility(View.GONE);
+
+        SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        fromUserName = sp.getString("userName", "");
     }
 
     private List<Message> msgs;
@@ -98,8 +104,8 @@ public class AIChatActivity extends BaseActivity {
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new Message("renly", img, "今日夜色真美", isSend, Message.MSG_STATE_SUCCESS));
-        msgs.add(new Message("AI机器人", headPhoto, "yep", isRecieve, Message.MSG_STATE_SUCCESS));
+        msgs.add(new Message(fromUserName, img, "测试发送", isSend, Message.MSG_STATE_SUCCESS));
+        msgs.add(new Message(toUserName, toUserAvater, "测试回复", isRecieve, Message.MSG_STATE_SUCCESS));
     }
 
     private void initList() {

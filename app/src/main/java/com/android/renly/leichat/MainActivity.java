@@ -179,6 +179,7 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        handler.removeCallbacksAndMessages(null);
     }
 
     @OnClick({R.id.ll_main_bottom_msg, R.id.ll_main_bottom_friends, R.id.ll_main_bottom_mine})

@@ -56,8 +56,8 @@ public class FriendsFragment extends BaseFragment {
                 }else{
                     intent = new Intent(getActivity(), ChatActivity.class);
                 }
-                intent.putExtra("name",friends.get(position).getName());
-                intent.putExtra("img",friends.get(position).getHeadPhoto());
+                intent.putExtra("toUserName",friends.get(position).getName());
+                intent.putExtra("toUserAvater",friends.get(position).getHeadPhoto());
                 startActivity(intent);
 //                Toast.makeText(getContext(), "Click:姓名：" + friends.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
@@ -112,6 +112,8 @@ public class FriendsFragment extends BaseFragment {
         String img5 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/3NHDgZN9AAxy3RuyvCQGdkjsSKL6n5707Wl5hqY1S5U!/b/dDIBAAAAAAAA&bo=JgImAiYCJgIRCT4!&rf=viewer_4";
 
         friends.add(new User("AI机器人",img));
+        friends.add(new User("amanda",img4));
+        friends.add(new User("samansa",img5));
         for(int i = 0;i < 5;i++){
             friends.add(new User("喜羊羊",img1));
             friends.add(new User("美羊羊",img2));

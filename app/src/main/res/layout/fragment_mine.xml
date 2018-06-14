@@ -1,12 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
+    android:layout_height="match_parent"
+    xmlns:YunZhi="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <com.android.renly.leichat.UIUtils.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="我的界面"
-        android:textSize="50sp"/>
+        android:background="#EEEEEE">
 
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_mine"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/red"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:id="@+id/rl_mine_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_centerHorizontal="true">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_mine_icon"
+                        android:scaleType="centerCrop"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:layout_centerInParent="true"
+                        YunZhi:civ_border_color="@color/white"
+                        YunZhi:civ_border_width="1dp"
+                        android:src="@drawable/my_user_default" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_mine_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_mine_icon"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="您好，请登录"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#DDDDDD" />
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="7dp"
+                android:layout_gravity="center|bottom"
+                android:background="@color/red"
+                android:textColor="@color/white"
+                android:textSize="25dp"
+                android:text="退出登陆"/>
+
+        </LinearLayout>
+    </com.android.renly.leichat.UIUtils.MyScrollView>
+
+</LinearLayout>
