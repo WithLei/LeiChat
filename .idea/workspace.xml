@@ -35,8 +35,8 @@
       <file leaf-file-name="ChatActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/ChatActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="43">
-              <caret line="150" column="107" lean-forward="false" selection-start-line="150" selection-start-column="107" selection-end-line="150" selection-end-column="107" />
+            <state relative-caret-position="434">
+              <caret line="364" column="30" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#10808#10809#0" expanded="true" />
@@ -46,21 +46,39 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-450">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MySQLiteOpenHelper.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/DB/MySQLiteOpenHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="WelcomeActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/WelcomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1201">
+            <state relative-caret-position="960">
               <caret line="46" column="22" lean-forward="false" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#710#1177#0" expanded="true" />
-                <element signature="e#1176#1177#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="253">
@@ -74,13 +92,23 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="NetConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/NetConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="3" column="50" lean-forward="false" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="activity_welcome.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_welcome.xml">
           <provider editor-type-id="android-designer2">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="420">
               <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
               <folding />
             </state>
@@ -90,7 +118,7 @@
       <file leaf-file-name="MineFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Fragment/MineFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
+            <state relative-caret-position="1530">
               <caret line="74" column="31" lean-forward="false" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
               <folding />
             </state>
@@ -103,7 +131,7 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="1800">
               <caret line="60" column="43" lean-forward="false" selection-start-line="60" selection-start-column="43" selection-end-line="60" selection-end-column="43" />
               <folding />
             </state>
@@ -113,44 +141,8 @@
       <file leaf-file-name="AIChatActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/AIChatActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1997">
+            <state relative-caret-position="1710">
               <caret line="92" column="38" lean-forward="false" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1500">
-              <caret line="181" column="48" lean-forward="false" selection-start-line="181" selection-start-column="48" selection-end-line="181" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <provider editor-type-id="android-manifest">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="718">
-              <caret line="26" column="28" lean-forward="false" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_login.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -2203,7 +2195,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/BaseActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/UIUtils/PagerSlidingTabStrip.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/bottom_chat.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/item_recieve.xml" />
@@ -2243,7 +2234,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Adapter/ChatAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Bean/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Bean/Message.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/NetConfig.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Fragment/FriendsFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/AIChatActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/ChatActivity.java" />
@@ -2254,6 +2244,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_mine.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Fragment/MineFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/NetConfig.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/DB/MySQLiteOpenHelper.java" />
       </list>
     </option>
   </component>
@@ -2279,9 +2271,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="Scratches" />
+      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -2435,6 +2426,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2447,6 +2439,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.android.renly.leichat.DB" />
       <recent name="com.android.renly.leichat.Utils" />
       <recent name="com.android.renly.leichat.UIUtils" />
       <recent name="com.android.renly.leichat.Common" />
@@ -2661,7 +2654,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1840" height="1098" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2670,7 +2662,6 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3207127" sideWeight="0.502265" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -2678,13 +2669,13 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24971688" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24971688" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2692,6 +2683,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295583" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -2735,14 +2727,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/SuperTextView-2.1.7.aar/99b4361e9598a1219eef222193a0d3fc/res/values/values.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="641">
-          <caret line="101" column="18" lean-forward="false" selection-start-line="101" selection-start-column="18" selection-end-line="101" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Utils/UIUtils.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/UIUtils/MyScrollView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
@@ -3003,7 +2987,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
           <caret line="3" column="33" lean-forward="false" selection-start-line="3" selection-start-column="33" selection-end-line="3" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3073,70 +3056,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1950">
           <caret line="94" column="25" lean-forward="false" selection-start-line="94" selection-start-column="25" selection-end-line="94" selection-end-column="25" />
-          <folding>
-            <marker date="1522850630235" expanded="false" signature="0:104" ph="/.../" />
-            <marker date="1522850630235" expanded="false" signature="200:211" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="247:253" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="300:311" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="347:353" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="388:399" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="435:441" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="504:556" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="600:611" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="647:653" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="699:710" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="746:752" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="803:814" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="850:856" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="898:909" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="945:951" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="1001:1012" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="1048:1054" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="1117:1169" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="1240:1292" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="1375:1427" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="1470:1481" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="1517:1523" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="1592:1644" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="1727:1779" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="1848:1900" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="1957:1968" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="2004:2010" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="2061:2072" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="2108:2114" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="2180:2232" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="2283:2294" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="2330:2336" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="2389:2400" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="2436:2442" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="2521:2573" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="2652:2704" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="2781:2833" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="2904:2956" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="3022:3074" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="3122:3133" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="3169:3175" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="3239:3291" ph="{...}" />
-            <marker date="1522850630235" expanded="true" signature="3356:3408" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="3456:3467" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="3503:3509" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="3573:3625" ph="{...}" />
-            <marker date="1522850630235" expanded="false" signature="3662:3673" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="3709:3715" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="3770:3781" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="3817:3823" ph=" }" />
-            <marker date="1522850630235" expanded="false" signature="3853:3864" ph=" { " />
-            <marker date="1522850630235" expanded="false" signature="3900:3906" ph=" }" />
-            <marker date="1522850630235" expanded="true" signature="3938:3990" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/NetConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="3" column="52" lean-forward="false" selection-start-line="3" selection-start-column="52" selection-end-line="3" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3172,7 +3091,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="718">
+        <state relative-caret-position="780">
           <caret line="26" column="28" lean-forward="false" selection-start-line="26" selection-start-column="28" selection-end-line="26" selection-end-column="28" />
           <folding />
         </state>
@@ -3180,27 +3099,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1500">
+        <state relative-caret-position="4740">
           <caret line="181" column="48" lean-forward="false" selection-start-line="181" selection-start-column="48" selection-end-line="181" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/ChatActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="43">
-          <caret line="150" column="107" lean-forward="false" selection-start-line="150" selection-start-column="107" selection-end-line="150" selection-end-column="107" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#10808#10809#0" expanded="true" />
-            <element signature="e#10876#10877#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/AIChatActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1997">
+        <state relative-caret-position="1710">
           <caret line="92" column="38" lean-forward="false" selection-start-line="92" selection-start-column="38" selection-end-line="92" selection-end-column="38" />
           <folding />
         </state>
@@ -3208,12 +3115,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/WelcomeActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1201">
+        <state relative-caret-position="960">
           <caret line="46" column="22" lean-forward="false" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#710#1177#0" expanded="true" />
-            <element signature="e#1176#1177#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3223,7 +3128,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="420">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
         </state>
@@ -3234,7 +3139,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="1800">
           <caret line="60" column="43" lean-forward="false" selection-start-line="60" selection-start-column="43" selection-end-line="60" selection-end-column="43" />
           <folding />
         </state>
@@ -3242,7 +3147,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Fragment/MineFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
+        <state relative-caret-position="1530">
           <caret line="74" column="31" lean-forward="false" selection-start-line="74" selection-start-column="31" selection-end-line="74" selection-end-column="31" />
           <folding />
         </state>
@@ -3257,6 +3162,42 @@
             <element signature="e#1697#1698#0" expanded="true" />
             <element signature="e#1743#1744#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Common/NetConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="3" column="50" lean-forward="false" selection-start-line="3" selection-start-column="50" selection-end-line="3" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/Activity/ChatActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="364" column="30" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="372" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10808#10809#0" expanded="true" />
+            <element signature="e#10876#10877#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-450">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/android/renly/leichat/DB/MySQLiteOpenHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
