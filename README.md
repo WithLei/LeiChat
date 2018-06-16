@@ -3,6 +3,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/WithLei/LeiChat.svg)](https://github.com/WithLei/LeiChat/network)
 [![GitHub license](https://img.shields.io/github/license/WithLei/LeiChat.svg)](https://github.com/WithLei/LeiChat/blob/master/LICENSE)
 
+README: [English](https://github.com/WithLei/LeiChat/blob/master/README.md) | [中文](https://github.com/WithLei/LeiChat/blob/master/README-zh.md)
 
 >Communicate with the world
 
