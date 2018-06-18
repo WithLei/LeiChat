@@ -15,3 +15,9 @@ README: [English](https://github.com/WithLei/LeiChat/blob/master/README.md) | [ä
 2. clone this repo.
 3. run make.bat if on windows, make.sh if on linux, or compile it with netbeans.
 4. add the .jar file created to your project.
+
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/1.png)
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/2.png)
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/3.png)
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/4.png)
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/5.png)
