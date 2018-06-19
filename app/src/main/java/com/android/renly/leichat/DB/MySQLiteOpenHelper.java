@@ -6,8 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     //单例模式
-    private static final String DB_NAME = "user.db";
-    public static final String TABLE_NAME = "leaderboard";
+    private static final String DB_NAME = "leichat.db";
+    public static final String TABLE_NAME_User = "User";
+    public static final String TABLE_NAME_Message = "Message";
     private static final int VERSION = 1;
     private static MySQLiteOpenHelper instance;
 
@@ -29,8 +30,11 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         //数据库创建
-        db.execSQL("create table if not exists " + TABLE_NAME + " (_id integer primary key autoincrement, " +
-                "name char(20), score integer(20))");
+        db.execSQL("create table if not exists " + TABLE_NAME_User + " (_id integer primary key autoincrement, " +
+                "name char(20), password char(20))");
+
+        db.execSQL("create table if not exists " + TABLE_NAME_Message + " (M_ID integer primary key autoincrement, " +
+        "M_content Text,M_Time Date,M_Status bit,M_messageType integer,M_fromUserID integer,M_toUserID integer)");
     }
 
     @Override
