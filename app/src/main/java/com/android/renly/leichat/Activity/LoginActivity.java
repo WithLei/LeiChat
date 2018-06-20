@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.renly.leichat.Common.BaseActivity;
+import com.android.renly.leichat.DB.MySQLiteOpenHelper;
 import com.android.renly.leichat.MainActivity;
 import com.android.renly.leichat.R;
 import com.android.renly.leichat.UIUtils.DrawableTextView;
@@ -220,6 +222,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         keyboardWatcher.removeSoftKeyboardStateListener(this);
     }
 
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
+    private SQLiteDatabase db;
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -228,16 +233,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 finish();
                 break;
             case R.id.btn_login:
-                if(!TextUtils.isEmpty(et_mobile.getText())){
-                    // 获取SharedPreferences对象
-                    SharedPreferences sharedPre = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                    // 获取Editor对象
-                    SharedPreferences.Editor editor = sharedPre.edit();
-                    // 设置参数
-                    editor.putString("userName", et_mobile.getText().toString());
-                    editor.apply();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                if(!TextUtils.isEmpty(et_mobile.getText()) && !TextUtils.isEmpty(et_password.getText())){
+                    String mobile = et_mobile.getText().toString();
+                    String password = et_password.getText().toString();
+
+                    mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
+                    db = mySQLiteOpenHelper.getWritableDatabase();
+                    if()
+                        loginSuccess();
+                    else{
+                        Toast.makeText(this,"账号密码错误，请重试",Toast.LENGTH_SHORT).show();
+                        et_password.setText("");
+                    }
                 }else{
                     Toast.makeText(this, "请输入账号密码", Toast.LENGTH_SHORT).show();
                 }
@@ -267,6 +274,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                 hideInputKeyboard();
                 break;
         }
+    }
+
+    private void loginSuccess() {
+        // 获取SharedPreferences对象
+        SharedPreferences sharedPre = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        // 获取Editor对象
+        SharedPreferences.Editor editor = sharedPre.edit();
+        // 设置参数
+        editor.putString("userName", et_mobile.getText().toString());
+        editor.apply();
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
     public void hideInputKeyboard() {

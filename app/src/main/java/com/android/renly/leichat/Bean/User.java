@@ -3,7 +3,7 @@ package com.android.renly.leichat.Bean;
 import java.util.List;
 
 public class User {
-    private String id;
+    private int id;
     private String name;
     private String headPhoto;
     private String password;
@@ -15,15 +15,22 @@ public class User {
         this.headPhoto = headPhoto;
     }
 
+    //账号的初始化
+    public User(String name, String password, String headPhoto){
+        this.name = name;
+        this.password = password;
+        this.headPhoto = headPhoto;
+    }
+
     public User(){
         super();
     }
 
-    public String getId(){
+    public int getId(){
         return this.id;
     }
 
-    public void setId(String id){
+    public void setId(int id){
         this.id = id;
     }
 

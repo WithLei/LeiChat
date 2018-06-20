@@ -51,7 +51,6 @@ public class WelcomeActivity extends Activity {
             handler.sendEmptyMessageDelayed(JUMP_TO_LOGIN,5000);
         else
             handler.sendEmptyMessageDelayed(JUMP_TO_MAIN,5000);
-
     }
 
     @Override
