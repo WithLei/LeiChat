@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +28,7 @@ import com.android.renly.leichat.Adapter.mLinearLayoutManager;
 import com.android.renly.leichat.Bean.User;
 import com.android.renly.leichat.Common.BaseActivity;
 import com.android.renly.leichat.Common.NetConfig;
+import com.android.renly.leichat.DB.MySQLiteOpenHelper;
 import com.android.renly.leichat.R;
 import com.android.renly.leichat.UIUtils.PagerSlidingTabStrip;
 import com.rockerhieu.emojicon.EmojiconEditText;
@@ -37,6 +40,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,13 +123,48 @@ public class ChatActivity extends BaseActivity implements Runnable {
 
         SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         fromUserName = sp.getString("userName", "");
+        fromUserAvater = sp.getString("headPhoto","");
     }
 
     private void initData() {
         msgs = new ArrayList<>();
-        String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName, img, "测试发送", isSend, 1));
+        msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName, fromUserAvater, "测试发送", isSend, 1));
         msgs.add(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, "测试回复", isRecieve, 1));
+
+        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
+        synchronized (mySQLiteOpenHelper){
+            db = mySQLiteOpenHelper.getWritableDatabase();
+            if (!db.isOpen()) {
+                db = mySQLiteOpenHelper.getReadableDatabase();
+            }
+            db.beginTransaction();
+            //开启查询
+            Cursor cursor = db.query(MySQLiteOpenHelper.TABLE_Message,null,null,null,null,null,null);
+
+            //判断游标是否为空
+            if(cursor.moveToFirst()){
+                //游历游标
+                do{
+                    //发送的消息
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserId")).equals(fromUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserId")).equals(toUserName)){
+                        String content = cursor.getString(cursor.getColumnIndex("M_content"));
+                        msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName,fromUserAvater,content,isSend,1));
+                    }
+                    //接受到的消息
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserId")).equals(toUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserId")).equals(fromUserName)){
+                        String content = cursor.getString(cursor.getColumnIndex("M_content"));
+                        msgs.add(new com.android.renly.leichat.Bean.Message(toUserName,toUserAvater,content,isRecieve,1));
+                    }
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.endTransaction();
+//            db.close();
+//            db = null;
+        }
+//        mySQLiteOpenHelper.close();
     }
 
     private static final int WHAT_REQUEST_SUCCESS = 1;
@@ -149,13 +188,44 @@ public class ChatActivity extends BaseActivity implements Runnable {
                     break;
                 case GET_MESSAGE:
                     ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, (String) message.obj, isRecieve, 1));
+                    insertMsgDB((String) message.obj,toUserName,fromUserName);
                     break;
                 case EMPTY_MESSAGE:
-                    ChatActivity.this.sendEmptyMessage();
+                    if (socket != null)
+                        ChatActivity.this.sendEmptyMessage();
+                    else
+                        Toast.makeText(ChatActivity.this,"还未连接服务器",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
     };
+
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
+    private SQLiteDatabase db;
+
+    private void insertMsgDB(String content,String fromUserName, String toUserName){
+//        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
+        synchronized (mySQLiteOpenHelper){
+            db = mySQLiteOpenHelper.getWritableDatabase();
+            if (!db.isOpen()) {
+                db = mySQLiteOpenHelper.getReadableDatabase();
+            }
+            db.beginTransaction();
+
+            db.execSQL(insertSql(content,fromUserName,toUserName));
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+            db.close();
+            db = null;
+        }
+        mySQLiteOpenHelper.close();
+    }
+
+    private String insertSql(String content, String fromUserName, String toUserName) {
+        return "insert into " + MySQLiteOpenHelper.TABLE_Message + "(M_content, M_fromUserId, M_toUserId, M_Time)" +
+                "values('" + content + "','" + fromUserName + "','" + toUserName + "','" + new Date(System.currentTimeMillis()) + "')";
+    }
 
     private void initList() {
         ChatAdapter = new ChatAdapter(msgs, ChatActivity.this,this);
@@ -220,12 +290,11 @@ public class ChatActivity extends BaseActivity implements Runnable {
     */
     private void sendMessage() {
         final String msg = toolboxEtMessage.getText().toString();
-        final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
         com.android.renly.leichat.Bean.Message sendMsg = null;
         if (msg != null) {
             if (socket.isConnected()) {//如果服务器连接
                 if (!socket.isOutputShutdown()) {//如果输出流没有断开
-                    sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_SUCCESS);
+                    sendMsg = new com.android.renly.leichat.Bean.Message(fromUserName, fromUserAvater, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_SUCCESS);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -234,14 +303,15 @@ public class ChatActivity extends BaseActivity implements Runnable {
                         }
                     }).start();
                 } else {//输出流断开
-                    sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
+                    sendMsg = new com.android.renly.leichat.Bean.Message(fromUserName, fromUserAvater, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
                 }
             } else {//服务器连接未成功
-                sendMsg = new com.android.renly.leichat.Bean.Message("renly", img, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
+                sendMsg = new com.android.renly.leichat.Bean.Message(fromUserName, fromUserAvater, msg, isSend, com.android.renly.leichat.Bean.Message.MSG_STATE_FAIL);
             }
         } else
             Toast.makeText(ChatActivity.this, "请输入文本内容", Toast.LENGTH_SHORT).show();
         ChatAdapter.addData(sendMsg);
+        insertMsgDB(msg,fromUserName,toUserName);
         toolboxEtMessage.setText("");
     }
 
@@ -267,9 +337,13 @@ public class ChatActivity extends BaseActivity implements Runnable {
      */
     private String toJsonMessage(String msg){
         com.android.renly.leichat.Bean.Message jsonMsg = new com.android.renly.leichat.Bean.Message();
-        jsonMsg.setForm("content");
+        if(!toUserName.equals("群聊(3)"))
+            jsonMsg.setForm("single");
+        else
+            jsonMsg.setForm("multi");
         jsonMsg.setContent(msg);
         jsonMsg.setToUserId(toUserName);
+        jsonMsg.setFromUserId(fromUserName);
 
         return JSON.toJSONString(jsonMsg);
     }
@@ -358,6 +432,7 @@ public class ChatActivity extends BaseActivity implements Runnable {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
         if(out != null)
             new Thread(new Runnable() {
                 @Override

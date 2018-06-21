@@ -1,6 +1,10 @@
 package com.android.renly.leichat.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +21,7 @@ import com.android.renly.leichat.Adapter.FriendsAdapter;
 import com.android.renly.leichat.Adapter.mLinearLayoutManager;
 import com.android.renly.leichat.Bean.User;
 import com.android.renly.leichat.Common.BaseFragment;
+import com.android.renly.leichat.DB.MySQLiteOpenHelper;
 import com.android.renly.leichat.R;
 
 import java.util.ArrayList;
@@ -70,8 +75,8 @@ public class FriendsFragment extends BaseFragment {
                 }else{
                     intent = new Intent(getActivity(), ChatActivity.class);
                 }
-                intent.putExtra("name",friends.get(position).getName());
-                intent.putExtra("img",friends.get(position).getHeadPhoto());
+                intent.putExtra("toUserName",friends.get(position).getName());
+                intent.putExtra("toUserAvater",friends.get(position).getHeadPhoto());
                 startActivity(intent);
 //                Toast.makeText(getContext(), "LongClick:姓名：" + friends.get(position).getName(), Toast.LENGTH_SHORT).show();
             }
@@ -102,28 +107,61 @@ public class FriendsFragment extends BaseFragment {
         }.start();
     }
 
+    private String headPhoto;
     private void initData() {
+        SharedPreferences sp = getContext().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        int userID = sp.getInt("id", 0);
+        headPhoto = sp.getString("headPhoto","");
+
         friends = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/F30x9B4k6qFpl6acDl66bAQ1Lg2BQrvWWP7.SQ8s8uI!/b/dAgBAAAAAAAA&bo=UAFYAVABWAEDCSw!&rf=viewer_4";
-        String img1 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
-        String img2 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/hkAN7ZOEiRPDuiQq.ax0IjNFCFaV70x6mr48jjYUhR8!/b/dFkAAAAAAAAA&bo=RAJEAkQCRAIRCT4!&rf=viewer_4";
-        String img3 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/LbTBuD2at8fsZ0q3g7*Ek9ROXDTzCAvecSYwj1nfBYU!/b/dDABAAAAAAAA&bo=LAEsASwBLAERCT4!&rf=viewer_4";
-        String img4 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/Ejo*xAMmPTTStXnvRK.U5xKTxc5uK7vDWGoUUzyN0rs!/b/dC4BAAAAAAAA&bo=gAKAAoACgAIRGS4!&rf=viewer_4";
-        String img5 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/3NHDgZN9AAxy3RuyvCQGdkjsSKL6n5707Wl5hqY1S5U!/b/dDIBAAAAAAAA&bo=JgImAiYCJgIRCT4!&rf=viewer_4";
+        String img1 = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/6vgNbIdlwQn4SRm.gvtL2l0Q*4Xz0mY47Lr62GN2Vt4!/b/dDMBAAAAAAAA&bo=4AHgAQAAAAADByI!&rf=viewer_4";
 
-        friends.add(new User("AI机器人",img));
-        friends.add(new User("amanda",img4));
-        friends.add(new User("samansa",img5));
-        for(int i = 0;i < 5;i++){
-            friends.add(new User("喜羊羊",img1));
-            friends.add(new User("美羊羊",img2));
-            friends.add(new User("懒羊羊",img3));
-            friends.add(new User("沸羊羊",img4));
-            friends.add(new User("慢羊羊",img5));
-        }
+        friends.add(new User("AI机器人",img, 10086));
+        friends.add(new User("群聊(3)",img1, 10087));
+        queryDB(userID);
 
         user = new User();
         user.setFriends(friends);
+    }
+
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
+    private SQLiteDatabase db;
+    private void queryDB(int userID) {
+        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(getContext());
+        db = mySQLiteOpenHelper.getWritableDatabase();
+        if(!db.isOpen())
+            db = mySQLiteOpenHelper.getReadableDatabase();
+        db.beginTransaction();
+
+        synchronized (mySQLiteOpenHelper){
+            //开启查询
+            Cursor cursor_friends = db.query(MySQLiteOpenHelper.TABLE_FRIENDS, null, null, null, null, null, null);
+            Cursor cursor_user = db.query(MySQLiteOpenHelper.TABLE_User, null, null, null, null, null, null);
+
+            //判断游标是否为空
+            if(cursor_friends.moveToFirst()){
+                //游历游标
+                do{
+                    if(cursor_friends.getInt(cursor_friends.getColumnIndex("U_id")) == userID){
+                        friends.add(idToUser(cursor_friends.getInt(cursor_friends.getColumnIndex("F_id")),cursor_user));
+                    }
+                }while(cursor_friends.moveToNext());
+            }
+        }
+
+    }
+
+    private User idToUser(int frindID, Cursor cursor) {
+        if(cursor.moveToFirst()){
+            do {
+                if(cursor.getInt(cursor.getColumnIndex("U_id")) == frindID)
+                    return new User(cursor.getString(cursor.getColumnIndex("name")),
+                            cursor.getString(cursor.getColumnIndex("headPhoto")),
+                            cursor.getInt(cursor.getColumnIndex("U_id")));
+            }while (cursor.moveToNext());
+        }
+        return null;
     }
 
     private static final int WHAT_REQUEST_SUCCESS = 1;

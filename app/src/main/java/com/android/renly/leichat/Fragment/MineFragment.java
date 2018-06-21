@@ -16,6 +16,7 @@ import com.android.renly.leichat.Activity.LoginActivity;
 import com.android.renly.leichat.Activity.UserInfoActivity;
 import com.android.renly.leichat.Common.BaseFragment;
 import com.android.renly.leichat.R;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +53,9 @@ public class MineFragment extends BaseFragment {
     private void initData() {
         SharedPreferences sp = getContext().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         String fromUserName = sp.getString("userName", "");
+        String headPhoto = sp.getString("headPhoto","");
         tvMineName.setText(fromUserName);
+        Picasso.with(getContext()).load(headPhoto).into(ivMineIcon);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.android.renly.leichat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,11 +19,13 @@ import com.android.renly.leichat.Common.BaseActivity;
 import com.android.renly.leichat.Fragment.FriendsFragment;
 import com.android.renly.leichat.Fragment.MineFragment;
 import com.android.renly.leichat.Fragment.MsgFragment;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.fl_main)
@@ -50,6 +54,8 @@ public class MainActivity extends BaseActivity {
     TextView tvTitleName;
     @BindView(R.id.iv_title_info)
     ImageView ivTitleInfo;
+    @BindView(R.id.iv_main_headImg)
+    CircleImageView ivMainHeadImg;
 
 
     private Unbinder unbinder;
@@ -75,12 +81,15 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         unbinder = ButterKnife.bind(this);
         initView();
-        setSelect(0);
+        setSelect(1);
     }
 
     private void initView() {
         ivTitleBack.setVisibility(View.GONE);
         ivTitleInfo.setImageResource(R.drawable.addpeople);
+        SharedPreferences sp = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        String headPhoto = sp.getString("headPhoto", "");
+        Picasso.with(this).load(headPhoto).into(ivMainHeadImg);
     }
 
     @Override

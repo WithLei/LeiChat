@@ -10,16 +10,18 @@ public class User {
     private List<User>friends;
 
     //朋友列表初始化
-    public User(String name,String headPhoto){
+    public User(String name,String headPhoto, int id){
         this.name = name;
         this.headPhoto = headPhoto;
+        this.id = id;
     }
 
     //账号的初始化
-    public User(String name, String password, String headPhoto){
+    public User(String name, String password, String headPhoto,int id){
         this.name = name;
         this.password = password;
         this.headPhoto = headPhoto;
+        this.id = id;
     }
 
     public User(){

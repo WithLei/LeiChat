@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
@@ -237,9 +238,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     String mobile = et_mobile.getText().toString();
                     String password = et_password.getText().toString();
 
-                    mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
-                    db = mySQLiteOpenHelper.getWritableDatabase();
-                    if()
+                    boolean flag = queryDB(mobile,password);
+
+                    if(flag)
                         loginSuccess();
                     else{
                         Toast.makeText(this,"账号密码错误，请重试",Toast.LENGTH_SHORT).show();
@@ -276,6 +277,40 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         }
     }
 
+    private String headPhoto;
+    private int userID;
+    private boolean queryDB(String mobile, String password) {
+        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
+        db = mySQLiteOpenHelper.getWritableDatabase();
+        if (!db.isOpen()) {
+            db = mySQLiteOpenHelper.getReadableDatabase();
+        }
+        db.beginTransaction();
+
+        synchronized (mySQLiteOpenHelper){
+            //开启查询
+            Cursor cursor = db.query(MySQLiteOpenHelper.TABLE_User,null,null,null,null,null,null);
+
+            //判断游标是否为空
+            if(cursor.moveToFirst()){
+                //游历游标
+                do{
+                    //检查账号密码是否正确
+//                    Log.e("print",cursor.getString(cursor.getColumnIndex("name")) + " + " + cursor.getString(cursor.getColumnIndex("password")));
+//                    Log.e("print",mobile + " = " + password);
+                    if(cursor.getString(cursor.getColumnIndex("name")).equals(mobile) &&
+                            cursor.getString(cursor.getColumnIndex("password")).equals(password)){
+                        headPhoto = cursor.getString(cursor.getColumnIndex("headPhoto"));
+                        userID = cursor.getInt(cursor.getColumnIndex("U_id"));
+                        return true;
+                    }
+                }while (cursor.moveToNext());
+            }
+        }
+        db.endTransaction();
+        return false;
+    }
+
     private void loginSuccess() {
         // 获取SharedPreferences对象
         SharedPreferences sharedPre = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
@@ -283,6 +318,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         SharedPreferences.Editor editor = sharedPre.edit();
         // 设置参数
         editor.putString("userName", et_mobile.getText().toString());
+        editor.putString("headPhoto",headPhoto);
+        editor.putInt("id",userID);
         editor.apply();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
