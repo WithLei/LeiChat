@@ -39,6 +39,7 @@ public class AIRobot {
                 case GET_REPLY:
                     reply = msg.getData().getString("content");
                     ChatAdapter.addData(new com.android.renly.leichat.Bean.Message("AIRobot",imgReply,reply,isRecieve, com.android.renly.leichat.Bean.Message.MSG_STATE_SUCCESS));
+
                     rv.scrollToPosition(ChatAdapter.getItemCount()-1);
                     Log.e("TAG",reply);
                     break;

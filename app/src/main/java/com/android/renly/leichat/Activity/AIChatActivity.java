@@ -3,6 +3,8 @@ package com.android.renly.leichat.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
@@ -22,10 +24,12 @@ import com.android.renly.leichat.Adapter.mLinearLayoutManager;
 import com.android.renly.leichat.Bean.Message;
 import com.android.renly.leichat.Common.AIRobot;
 import com.android.renly.leichat.Common.BaseActivity;
+import com.android.renly.leichat.DB.MySQLiteOpenHelper;
 import com.android.renly.leichat.R;
 import com.android.renly.leichat.UIUtils.PagerSlidingTabStrip;
 import com.rockerhieu.emojicon.EmojiconEditText;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,6 +78,7 @@ public class AIChatActivity extends BaseActivity {
     private Unbinder unbinder;
     private String toUserAvater;
     private String fromUserName;
+    private String fromUserAvater;
     private String toUserName;
 
     @Override
@@ -95,17 +100,53 @@ public class AIChatActivity extends BaseActivity {
 
         SharedPreferences sp = this.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         fromUserName = sp.getString("userName", "");
+        fromUserAvater = sp.getString("headPhoto","");
     }
 
     private List<Message> msgs;
     private static final boolean isSend = true;
     private static final boolean isRecieve = false;
 
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
+    private SQLiteDatabase db;
+
     private void initData() {
         msgs = new ArrayList<>();
         String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
         msgs.add(new Message(fromUserName, img, "测试发送", isSend, Message.MSG_STATE_SUCCESS));
         msgs.add(new Message(toUserName, toUserAvater, "测试回复", isRecieve, Message.MSG_STATE_SUCCESS));
+
+        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
+        synchronized (mySQLiteOpenHelper){
+            db = mySQLiteOpenHelper.getWritableDatabase();
+            if (!db.isOpen())
+                db = mySQLiteOpenHelper.getReadableDatabase();
+
+            db.beginTransaction();
+            //开启查询
+            Cursor cursor = db.query(MySQLiteOpenHelper.TABLE_Message,null,null,null,null,null,null);
+
+            //判断游标是否为空
+            if(cursor.moveToFirst()){
+                //游历游标
+                do{
+                    //发送的消息
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserID")).equals(fromUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserID")).equals(toUserName)){
+                        String content = cursor.getString(cursor.getColumnIndex("M_content"));
+                        msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName,fromUserAvater,content,isSend,1));
+                    }
+                    //接受到的消息
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserID")).equals(toUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserID")).equals(fromUserName)){
+                        String content = cursor.getString(cursor.getColumnIndex("M_content"));
+                        msgs.add(new com.android.renly.leichat.Bean.Message(toUserName,toUserAvater,content,isRecieve,1));
+                    }
+                }while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.endTransaction();
+        }
     }
 
     private void initList() {
@@ -197,6 +238,23 @@ public class AIChatActivity extends BaseActivity {
         scorllToBottom();
     }
 
+    private void insertMsgDB(String content,String fromUserName, String toUserName){
+        synchronized (mySQLiteOpenHelper){
+
+            db.beginTransaction();
+
+            db.execSQL(insertSql(content,fromUserName,toUserName));
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+    }
+
+    private String insertSql(String content, String fromUserName, String toUserName) {
+        return "insert into " + MySQLiteOpenHelper.TABLE_Message + "(M_content, M_fromUserId, M_toUserId, M_Time)" +
+                "values('" + content + "','" + fromUserName + "','" + toUserName + "','" + new Date(System.currentTimeMillis()) + "')";
+    }
+
     /*
     点击发送消息
      */
@@ -206,7 +264,8 @@ public class AIChatActivity extends BaseActivity {
         final String msg = toolboxEtMessage.getText().toString();
         final String img = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/ZVU219Y5gp2VhDelSYRNr6hA1l3KxRL*UZqj9Bks0VU!/b/dDEBAAAAAAAA&bo=WAJZAlgCWQIRCT4!&rf=viewer_4";
         if (msg != null) {
-            ChatAdapter.addData(new Message("renly", img, msg, isSend, Message.MSG_STATE_SUCCESS));
+            ChatAdapter.addData(new Message(fromUserName, img, msg, isSend, Message.MSG_STATE_SUCCESS));
+            insertMsgDB(msg,fromUserName,toUserName);
             aiRobot = new AIRobot(AIChatActivity.this, ChatAdapter);
             aiRobot.setRV(rvChatItem);
             aiRobot.getReply(msg);

@@ -134,9 +134,9 @@ public class ChatActivity extends BaseActivity implements Runnable {
         mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
         synchronized (mySQLiteOpenHelper){
             db = mySQLiteOpenHelper.getWritableDatabase();
-            if (!db.isOpen()) {
+            if (!db.isOpen())
                 db = mySQLiteOpenHelper.getReadableDatabase();
-            }
+
             db.beginTransaction();
             //开启查询
             Cursor cursor = db.query(MySQLiteOpenHelper.TABLE_Message,null,null,null,null,null,null);
@@ -146,14 +146,14 @@ public class ChatActivity extends BaseActivity implements Runnable {
                 //游历游标
                 do{
                     //发送的消息
-                    if(cursor.getString(cursor.getColumnIndex("M_fromUserId")).equals(fromUserName) &&
-                            cursor.getString(cursor.getColumnIndex("M_toUserId")).equals(toUserName)){
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserID")).equals(fromUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserID")).equals(toUserName)){
                         String content = cursor.getString(cursor.getColumnIndex("M_content"));
                         msgs.add(new com.android.renly.leichat.Bean.Message(fromUserName,fromUserAvater,content,isSend,1));
                     }
                     //接受到的消息
-                    if(cursor.getString(cursor.getColumnIndex("M_fromUserId")).equals(toUserName) &&
-                            cursor.getString(cursor.getColumnIndex("M_toUserId")).equals(fromUserName)){
+                    if(cursor.getString(cursor.getColumnIndex("M_fromUserID")).equals(toUserName) &&
+                            cursor.getString(cursor.getColumnIndex("M_toUserID")).equals(fromUserName)){
                         String content = cursor.getString(cursor.getColumnIndex("M_content"));
                         msgs.add(new com.android.renly.leichat.Bean.Message(toUserName,toUserAvater,content,isRecieve,1));
                     }
@@ -161,10 +161,7 @@ public class ChatActivity extends BaseActivity implements Runnable {
             }
             cursor.close();
             db.endTransaction();
-//            db.close();
-//            db = null;
         }
-//        mySQLiteOpenHelper.close();
     }
 
     private static final int WHAT_REQUEST_SUCCESS = 1;
@@ -187,7 +184,12 @@ public class ChatActivity extends BaseActivity implements Runnable {
                     rvChatItem.scrollToPosition(ChatAdapter.getItemCount() - 1);
                     break;
                 case GET_MESSAGE:
-                    ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, (String) message.obj, isRecieve, 1));
+                    if(!toUserName.equals("群聊(3)"))
+                        ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, toUserAvater, (String) message.obj, isRecieve, 1));
+                    else{
+                        String avater = "http://m.qpic.cn/psb?/V13Hh3Xy2wrWJw/Ejo*xAMmPTTStXnvRK.U5xKTxc5uK7vDWGoUUzyN0rs!/b/dC4BAAAAAAAA&bo=gAKAAoACgAIRGS4!&rf=viewer_4";
+                        ChatAdapter.addData(new com.android.renly.leichat.Bean.Message(toUserName, avater, (String) message.obj, isRecieve, 1));
+                    }
                     insertMsgDB((String) message.obj,toUserName,fromUserName);
                     break;
                 case EMPTY_MESSAGE:
@@ -204,22 +206,15 @@ public class ChatActivity extends BaseActivity implements Runnable {
     private SQLiteDatabase db;
 
     private void insertMsgDB(String content,String fromUserName, String toUserName){
-//        mySQLiteOpenHelper = MySQLiteOpenHelper.getInstance(this);
         synchronized (mySQLiteOpenHelper){
-            db = mySQLiteOpenHelper.getWritableDatabase();
-            if (!db.isOpen()) {
-                db = mySQLiteOpenHelper.getReadableDatabase();
-            }
+
             db.beginTransaction();
 
             db.execSQL(insertSql(content,fromUserName,toUserName));
 
             db.setTransactionSuccessful();
             db.endTransaction();
-            db.close();
-            db = null;
         }
-        mySQLiteOpenHelper.close();
     }
 
     private String insertSql(String content, String fromUserName, String toUserName) {
@@ -433,6 +428,8 @@ public class ChatActivity extends BaseActivity implements Runnable {
     protected void onDestroy() {
         super.onDestroy();
 
+//        db.close();
+//        mySQLiteOpenHelper.close();
         if(out != null)
             new Thread(new Runnable() {
                 @Override
