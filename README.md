@@ -21,3 +21,4 @@ README: [English](https://github.com/WithLei/LeiChat/blob/master/README.md) | [ä
 ![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/3.png)
 ![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/4.png)
 ![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/5.png)
+![](https://github.com/WithLei/LeiChat/blob/master/ScreenShots/6.png)
